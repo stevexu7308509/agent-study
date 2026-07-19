@@ -17,6 +17,7 @@
 | 05 | ReAct Agent 模式 | [05-ReAct-Agent模式.md](05-ReAct-Agent模式.md) | ReAct 循环、Prompt 模板、输出解析、Agent 主循环 |
 | 06 | Python vs Java 对比 | [06-Python-Java对比.md](06-Python-Java对比.md) | 语法速查表、Python 优势、从 Java 视角看差异 |
 | 07 | API 成本与延迟 | [07-API成本与延迟测试.md](07-API成本与延迟测试.md) | 延迟测试、Token 计价、成本优化策略 |
+| 08 | 📝 学习日志 7/19 | [08-学习日志-2026-07-19.md](08-学习日志-2026-07-19.md) | Git 代理配置、max_steps 控制、LLM 输出解析 bug 修复 |
 
 ---
 

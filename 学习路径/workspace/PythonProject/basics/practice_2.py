@@ -1,6 +1,8 @@
 # 需要：pip install openai
 # 前置：ollama pull gemma4:e4b && ollama serve
-import sys
+import sys, os
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from config import create_openai_client, OPENAI_MODEL
 

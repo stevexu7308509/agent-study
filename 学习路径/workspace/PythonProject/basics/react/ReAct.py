@@ -81,9 +81,8 @@ Action: 你决定采取的行动，必须是以下格式之一：
 - `{{tool_name}}[{{tool_input}}]`：调用一个可用工具。
 - `Finish[最终答案]`：当你认为已经获得最终答案时。
 - 当你收集到足够的信息，能够回答用户的最终问题时，你必须在`Action:`字段后使用 `Finish[最终答案]` 来输出最终答案。
-# ⬆ 注意: 模板里的 {{}} 是 Python format() 的转义，实际输出是 {tool_name}
-# {tool_name}[{tool_input}] 举例: Search["今天天气怎么样"]
-# Finish[最终答案] 举例: Finish["北京今天晴，25度"]
+# ⬆ 注意: 模板里的双花括号 {{{{}}}} 是 Python format() 的转义，实际输出是单花括号
+# 比如 Search["..."]、Finish["..."]
 
 现在，请开始解决以下问题：
 Question: {question}
@@ -112,7 +111,7 @@ class ReActAgent:
     - _parse_output() / _parse_action() 是子步骤
     """
 
-    def __init__(self, llm_client: HelloAgentsLLM, tool_executor: ToolExecutor, max_steps: int = 5):
+    def __init__(self, llm_client: HelloAgentsLLM, tool_executor: ToolExecutor, max_steps: int = 8):
         """
         构造函数。
 
@@ -216,6 +215,11 @@ class ReActAgent:
                 print(f"🤔 思考: {thought}")
 
             if not action:
+                # LLM 有时不按格式输出 Action，而是直接给答案
+                # 如果响应文本不为空且不是纯空白，就当最终答案处理
+                if response_text and len(response_text.strip()) > 10:
+                    print(f"🎉 最终答案: {response_text.strip()}")
+                    return response_text.strip()
                 print("警告：未能解析出有效的Action，流程终止。")
                 break
 
@@ -262,7 +266,7 @@ class ReActAgent:
     # _parse_output() — 从 LLM 原始输出中提取 Thought 和 Action
     # ------------------------------------------------------------------
     def _parse_output(self, text: str):
-        """
+        r"""
         用正则表达式从 LLM 输出中提取 Thought 和 Action。
 
         参数:
@@ -315,7 +319,7 @@ class ReActAgent:
     # _parse_action() — 解析工具调用 Action
     # ------------------------------------------------------------------
     def _parse_action(self, action_text: str):
-        """
+        r"""
         从 Action 字符串中解析出工具名和输入参数。
 
         参数:
@@ -346,7 +350,7 @@ class ReActAgent:
     # _parse_action_input() — 解析 Finish 中的最终答案
     # ------------------------------------------------------------------
     def _parse_action_input(self, action_text: str):
-        """
+        r"""
         从 Finish 指令中提取最终答案。
 
         参数:
@@ -406,5 +410,5 @@ if __name__ == '__main__':
     agent = ReActAgent(llm_client=llm, tool_executor=tool_executor)
 
     # 步骤 5: 运行!
-    question = "深圳福田保税区在哪里，有什么产业优势？"
+    question = "我想在福田保税区买肯德基，便宜点的？"
     agent.run(question)

@@ -1,5 +1,7 @@
 # 需要：pip install openai
-import sys, time
+import sys, time, os
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from openai import OpenAI
 from config import create_openai_client, OPENAI_MODEL

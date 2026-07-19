@@ -1,6 +1,9 @@
 # 需要：pip install anthropic
 import sys, json
 
+import sys, os
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from config import ANTHROPIC_MODEL, create_anthropic_client
 
 if hasattr(sys.stdout, "reconfigure"):
